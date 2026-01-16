@@ -2,6 +2,7 @@ package com.ruthorTech.demo_student_course.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +27,8 @@ public class Course {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @JsonBackReference
-    @ManyToMany(mappedBy = "courses")
+    @JsonIgnoreProperties("courses")
+    //@ManyToMany(mappedBy = "courses") // by default Many to many FetchType.LAZYå
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
     private Set<Student> students = new HashSet<>();
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @Transactional
 public class StudentService {
     private final StudentRepository studentRepo;
+    private final CourseRepository courseRepo;
 
     //get all students
     public List<Student> getAllStudents() {
@@ -30,9 +31,19 @@ public class StudentService {
     }
 
     //update
-    public Student updateStudent(Long studentId, Student student) {
+    public Student updateStudent(Long studentId, Student updatedStudent) {
         Student existingStudent = getStudentById(studentId);
-        existingStudent.setName(student.getName());
+        existingStudent.setName(updatedStudent.getName());
+        if (updatedStudent.getCourses() != null) {
+
+            existingStudent.getCourses().clear();
+
+            for (Course course : updatedStudent.getCourses()) {
+                Course existingCourse = courseRepo.findById(course.getId())
+                        .orElseThrow(() -> new RuntimeException("Course not found: " + course.getId()));
+                existingStudent.getCourses().add(existingCourse);
+            }
+        }
         return studentRepo.save(existingStudent);
     }
 

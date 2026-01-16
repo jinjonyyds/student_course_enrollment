@@ -40,6 +40,9 @@ public class CourseService {
 
     // delete course
     public void deleteCourse(Long courseId) {
-        courseRepo.deleteById(courseId);
+        Course course = courseRepo.findById(courseId)
+                        .orElseThrow(() -> new RuntimeException("Course not found"));
+        course.getStudents().forEach(student -> student.getCourses().remove(course));
+        courseRepo.delete(course);
     }
 }

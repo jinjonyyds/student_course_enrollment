@@ -37,7 +37,10 @@ public class StudentService {
     }
 
     public void deleteStudent(Long studentId) {
-        studentRepo.deleteById(studentId);
+        Student student = studentRepo.findById(studentId)
+                        .orElseThrow(() -> new RuntimeException("Student not found"));
+        student.getCourses().forEach(course -> course.getStudents().remove(student));
+        studentRepo.delete(student);
     }
 
 

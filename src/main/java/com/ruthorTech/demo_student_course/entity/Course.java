@@ -28,7 +28,7 @@ public class Course {
     private String name;
 
     @JsonIgnoreProperties("courses")
-    //@ManyToMany(mappedBy = "courses") // by default Many to many FetchType.LAZYå
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "courses") // by default Many to many FetchType.LAZYå
+//    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
     private Set<Student> students = new HashSet<>();
 }
